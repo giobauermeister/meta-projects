@@ -1,0 +1,11 @@
+[Unit]
+Description=Qt example application simulating a check in kiosk like the ones found in airports
+After=graphical.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/fazer script que roda as duas aplicacoes
+#Environment="QWS_DISPLAY=LinuxFb:/dev/fb:genericcolors" "QWS_KEYBOARD=USB:/dev/input/event-keyboard" "QWS_MOUSE_PROTO=LinuxInput:/dev/input/touchscreen0"
+
+[Install]
+WantedBy=graphical.target

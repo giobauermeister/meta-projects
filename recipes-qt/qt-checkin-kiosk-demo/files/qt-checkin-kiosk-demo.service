@@ -1,0 +1,9 @@
+[Unit]
+Description=Starts Qt Checkin Kiosk Demo
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/qt-checkin-kiosk-demo.sh
+
+[Install]
+WantedBy=graphical.target
