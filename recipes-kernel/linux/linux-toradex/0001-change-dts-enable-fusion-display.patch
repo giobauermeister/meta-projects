@@ -1,0 +1,37 @@
+From 06983cdaeb51344ca618af4be268242f2970bd2e Mon Sep 17 00:00:00 2001
+From: Giovanni Santana <giovanni.santana@toradex.com>
+Date: Thu, 23 Jun 2016 14:15:46 -0300
+Subject: [PATCH] test2
+
+Signed-off-by: Giovanni Santana <giovanni.santana@toradex.com>
+---
+ arch/arm/boot/dts/imx6dl-colibri-eval-v3.dts | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/arch/arm/boot/dts/imx6dl-colibri-eval-v3.dts b/arch/arm/boot/dts/imx6dl-colibri-eval-v3.dts
+index 3a2121e..7b6c3a4 100644
+--- a/arch/arm/boot/dts/imx6dl-colibri-eval-v3.dts
++++ b/arch/arm/boot/dts/imx6dl-colibri-eval-v3.dts
+@@ -20,7 +20,7 @@
+ 
+ /* Add the following define if you connect a Fusion display with a capacitive
+    touch controller */
+-/* #define PCAP */
++#define PCAP
+ 
+ / {
+ 	model = "Toradex Colibri iMX6DL/S on Colibri Evaluation Board V3";
+@@ -97,8 +97,8 @@
+ };
+ 
+ &backlight {
+-#if 0 /* PWM polarity: if 1 is brightest */
+-#if 0 /* Fusion 7 needs 10kHz PWM frequency */
++#if 1 /* PWM polarity: if 1 is brightest */
++#if 1 /* Fusion 7 needs 10kHz PWM frequency */
+ 	pwms = <&pwm3 0 100000>;
+ #endif
+ 	brightness-levels = <0 4 8 16 32 64 128 255>;
+-- 
+1.9.1
+
