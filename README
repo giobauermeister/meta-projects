@@ -18,14 +18,7 @@ Patches
 This layer includes patches so the Fusion 7" touch display works on both Apalis and Colibri iMX6 modules
 
 
-Table of Contents
-=================
-
-  I. Adding the projects layer to your build
- II. Misc
-
-
-I. Building an image with this layer and its Airport Dual Display Demo
+Building an image with this layer and its Airport Dual Display Demo
 =================================================
 
 First configure a build environment following instructions on Toradex Developer Portal
@@ -49,8 +42,8 @@ Chose MACHINE "colibri-imx6" or "apalis-imx6"
 
 Add the following content
 
-        IMAGE_INSTALL_append = " \
-        qtbase \
+  IMAGE_INSTALL_append = " \
+  		qtbase \
 		qtbase-fonts \
 		qtbase-plugins \
 		qtquick1 \
@@ -61,7 +54,7 @@ Add the following content
 		qt-airport-kiosk-demo \
 		qt-airport-timetable-demo \
 		"               
-     DISTRO_FEATURES_remove = "x11 wayland"
+  DISTRO_FEATURES_remove = "x11 wayland"
 
 Then build a console image
 
