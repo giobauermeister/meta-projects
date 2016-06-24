@@ -7,27 +7,15 @@ Please see the corresponding sections below for details.
 Dependencies
 ============
 
-This layer depends on:
+This layer should be cloned to Toradex BSP V2.6 stuff folder:
 
-  URI: git://git.openembedded.org/bitbake
-  branch: master
-
-  URI: git://git.openembedded.org/openembedded-core
-  layers: meta
-  branch: master
-
-  URI: git://git.yoctoproject.org/xxxx
-  layers: xxxx
-  branch: master
-
+  URI: git://git.toradex.com/meta-toradex.git
+  branch: V2.6
 
 Patches
 =======
 
-Please submit any patches against the projects layer to the
-xxxx mailing list (xxxx@zzzz.org) and cc: the maintainer:
-
-Maintainer: XXX YYYYYY <xxx.yyyyyy@zzzzz.com>
+This layer includes patches so the Fusion 7" touch display works on both Apalis and Colibri iMX6 modules
 
 
 Table of Contents
@@ -37,28 +25,63 @@ Table of Contents
  II. Misc
 
 
-I. Adding the projects layer to your build
+I. Building an image with this layer and its Airport Dual Display Demo
 =================================================
 
---- replace with specific instructions for the projects layer ---
+First configure a build environment following instructions on Toradex Developer Portal
+http://developer.toradex.com/knowledge-base/board-support-package/openembedded-(core)
 
-In order to use this layer, you need to make the build system aware of
-it.
+Inside stuff folder clone meta-projects layer
 
-Assuming the projects layer exists at the top-level of your
-yocto build tree, you can add it to the build system by adding the
-location of the projects layer to bblayers.conf, along with any
-other layers needed. e.g.:
+    cd ~/oe-core/stuff
+    git clone https://github.com/giobauermeister/meta-projects.git -b toradexImageV2.6
 
-  BBLAYERS ?= " \
-    /path/to/yocto/meta \
-    /path/to/yocto/meta-yocto \
-    /path/to/yocto/meta-yocto-bsp \
-    /path/to/yocto/meta-projects \
+Add layer in bblayers.conf
+
+BASELAYERS ?= " \
+    ... \
+    ${TOPDIR}/../stuff/meta-projects \
+    ... \
     "
 
+In local.conf file
+Chose MACHINE "colibri-imx6" or "apalis-imx6"
 
-II. Misc
-========
+Add the following content
 
---- replace with specific information about the projects layer ---
+        IMAGE_INSTALL_append = " \
+        qtbase \
+		qtbase-fonts \
+		qtbase-plugins \
+		qtquick1 \
+		qtquick1-qmlplugins \
+		qtquick1-plugins \                         
+		packagegroup-qt5 \
+		packagegroup-qt5-apps \
+		qt-airport-kiosk-demo \
+		qt-airport-timetable-demo \
+		"               
+     DISTRO_FEATURES_remove = "x11 wayland"
+
+Then build a console image
+
+    bitbake console-trdx-image
+    
+NOTE: for building a console image with Qt5 support on framebuffer, the following changes are necessary in qtbase_git.bb
+
+    diff --git a/recipes-qt/qt5/qtbase_git.bb b/recipes-qt/qt5/qtbase_git.bb
+    index 3ef5923..f93effc 100644
+    --- a/recipes-qt/qt5/qtbase_git.bb
+    +++ b/recipes-qt/qt5/qtbase_git.bb
+    @@ -88,7 +88,10 @@ PACKAGECONFIG[libpng] = "-system-libpng,-no-libpng,libpng"
+    PACKAGECONFIG[zlib] = "-system-zlib,-qt-zlib,zlib"
+    PACKAGECONFIG[pcre] = "-system-pcre,-qt-pcre,pcre"
+    PACKAGECONFIG[gl] = "-opengl desktop -no-eglfs,,virtual/libgl"
+    -PACKAGECONFIG[gles2] = "-opengl es2 -eglfs,,virtual/libgles2 virtual/egl"
+    +# PACKAGECONFIG[gles2] = "-opengl es2 -eglfs,,virtual/libgles2 virtual/egl"
+    +PACKAGECONFIG[gles2] = "-opengl es2 -eglfs -qpa eglfs,,virtual/libgles2 virtual/egl"
+    +##
+    PACKAGECONFIG[tslib] = "-tslib,-no-tslib,tslib"
+    PACKAGECONFIG[cups] = "-cups,-no-cups,cups"
+    PACKAGECONFIG[dbus] = "-dbus,-no-dbus,dbus"
+
